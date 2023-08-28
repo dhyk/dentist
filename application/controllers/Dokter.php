@@ -11,24 +11,123 @@ class Dokter extends CI_Controller
 
   public function index()
   {
-    $this->load->view('doc_dashboard');
+    if(! $this->session->userdata("id_akun")) redirect('Home');
+
+    $data=[
+      'nama'=>$this->session->userdata("nama"),
+      'pasien'=>$this->modAkun->getPasien(),
+    ];
+    $this->load->view('doc_dashboard',$data);
   }
 
   public function pasien()
   {
-    $this->load->view('doc_pasien_profile');
+    if(! $this->session->userdata("id_akun")) redirect('Home');
+
+    $data=[
+      'nama'=>$this->session->userdata("nama"),
+      'pasien'=>$this->modAkun->getPasienById($this->input->get("a"))[0],
+      'treatment'=>$this->modAkun->getTreatment($this->input->get("a")),
+    ];
+
+    $this->load->view('doc_pasien_profile',$data);
   }
 
   public function tambahtreatment()
   {
-    $this->load->view('doc_tambah_treatment');
+    if(! $this->session->userdata("id_akun")) redirect('Home');
+
+    $data=[
+      'nama'=>$this->session->userdata("nama"),
+      'id_pasien'=>$this->input->get("a"),
+      'prosedur'=>$this->modAkun->getProsedur(),
+      'bhp'=>$this->modAkun->getBhp(),
+    ];
+
+    $this->load->view('doc_tambah_treatment',$data);
+  }
+
+  public function simpanTreatment(){
+
+    $data=[
+      'tanggal'=>$this->input->post('tanggal'),
+      'keluhan' =>$this->input->post('keluhan'),
+      'prosedur' =>$this->input->post('prosedur'),
+      'subprosedur' =>$this->input->post('subprosedur'),
+      'bhp' =>$this->input->post('bhp'),
+      'subbhp' =>$this->input->post('subbhp'),
+      'biaya' => $this->modAkun->getBiaya($this->input->post('subbhp'))[0]->harga,
+      'id_pasien'=>$this->input->post('id_pasien'),
+    ];
+
+    // var_dump($data);
+
+    $result=$this->modAkun->simpantreatment($data);
+    if($result){
+      $this->session->set_flashdata('status','berhasil');
+    }else{
+      $this->session->set_flashdata('status','gagal');
+    }
+
+    redirect('Dokter/pasien?a='.$this->input->post("id_pasien"));
+
+  }
+
+  public function getsubprosedur(){
+
+    $id=$this->modAkun->getProsedurId($this->input->post("prosedur"))[0]->id_prosedur;
+    $data=$this->modAkun->getSubprosedur($id);
+    echo json_encode($data);
+  }
+
+  public function getsubbhp(){
+
+    // var_dump($this->input->get("bhp"));
+    $id=$this->modAkun->getBhpId($this->input->post("bhp"))[0]->id_bhp;
+    // var_dump($id);
+    $data=$this->modAkun->getSubbhp($id);
+    // var_dump($data);
+   echo json_encode($data);
   }
 
   public function ubahtreatment()
   {
-    $this->load->view('doc_edit_treatment');
+
+    if(! $this->session->userdata("id_akun")) redirect('Home');
+
+    $data=[
+      'nama'=>$this->session->userdata("nama"),
+      'treatment'=>$this->modAkun->getTreatmentById($this->input->get("a"))[0],
+      'prosedur'=>$this->modAkun->getProsedur(),
+      'bhp'=>$this->modAkun->getBhp(),
+    ];
+
+    $this->load->view('doc_edit_treatment',$data);
   }
 
+  
+  public function editTreatment(){
+
+    $data=[
+      'tanggal'=>$this->input->post('tanggal'),
+      'keluhan' =>$this->input->post('keluhan'),
+      'prosedur' =>$this->input->post('prosedur'),
+      'subprosedur' =>$this->input->post('subprosedur'),
+      'bhp' =>$this->input->post('bhp'),
+      'subbhp' =>$this->input->post('subbhp'),
+      'biaya' => $this->modAkun->getBiaya($this->input->post('subbhp'))[0]->harga,
+    ];
+
+    $result=$this->modAkun->edittreatment($this->input->post('id_treatment'),$data);
+    if($result){
+      $this->session->set_flashdata('status','berhasil');
+    }else{
+      $this->session->set_flashdata('status','gagal');
+    }
+
+    redirect('Dokter/pasien?a='.$this->input->post("id_pasien"));
+
+  }
   
 
 

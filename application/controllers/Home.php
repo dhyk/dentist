@@ -34,30 +34,35 @@ class Home extends CI_Controller
         $this->session->set_userdata("nama", $hasil[0]->nama);
         $this->session->set_userdata("email", $hasil[0]->email);
 
-        if($hasil[0]->job=="Admin"){
+        if ($hasil[0]->job == "Admin") {
           redirect('Admin');
-        }else if($hasil[0]->job=="Assistant"){
+          // echo 'admin';
+        } else if ($hasil[0]->job == "Assistant") {
           redirect('Assistant');
-        }else if($hasil[0]->job=="Dokter"){
+          // echo 'asisten';
+        } else if ($hasil[0]->job == "Dokter") {
           redirect('Dokter');
-        }else{
-          redirect('Home');
+          // echo 'dokter';
+        } else {
+          $this->session->set_flashdata('status', 'gagal');
+          redirect('Home/login');
         }
-
-       
       } else {
 
-        // $this->session->set_flashdata('flash', 'password_gagal');
-        redirect('Home');
+        $this->session->set_flashdata('status', 'gagal');
+        redirect('Home/login');
       }
     } else {
-      // $this->session->set_flashdata('flash', 'username_gagal');
-      redirect('Home');
+      $this->session->set_flashdata('status', 'gagal');
+      redirect('Home/login');
     }
-
-    redirect('Home');
+    $this->session->set_flashdata('status', 'gagal');
+    redirect('Home/login');
   }
 
-  
-
+  public function logout()
+  {
+    $this->session->sess_destroy();
+    redirect('Home');
+  }
 }

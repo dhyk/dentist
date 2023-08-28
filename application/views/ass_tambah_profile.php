@@ -23,26 +23,24 @@
    <div class="change-profile d-flex flex-column vh-100">
       <!-- navbar -->
       <div class="d-flex align-items-center justify-content-between mb-auto p-3 bg-white shadow-sm osahan-header">
-         <a href="my-profile.html" class="text-dark bg-white shadow rounded-circle icon">
+         <a href="<?= base_url() . 'Assistant' ?>" class="text-dark bg-white shadow rounded-circle icon">
             <span class="mdi mdi-arrow-left mdi-18px"></span></a>
          <h6 class="mb-0 ms-3 me-auto fw-bold">Pasien Baru</h6>
          <div class="d-flex align-items-center gap-3">
-            <!-- <a class="toggle d-flex align-items-center justify-content-center fs-5 bg-white shadow rounded-circle icon" href="#"><i
-                  class="bi bi-list"></i></a> -->
+            <a class="toggle d-flex align-items-center justify-content-center fs-5 bg-white shadow rounded-circle icon" href="#">
+               <i class="bi bi-list"></i></a>
          </div>
       </div>
       <!-- body -->
       <div class="vh-100 my-auto overflow-auto p-3">
-         <form>
+         <form method="post" action="<?= base_url().'Assistant/simpanbiodata'?>">
             <div class="mb-3">
                <label for="exampleFormControlName" class="form-label mb-1">Nama</label>
                <div class="input-group border bg-white rounded-3 py-1" id="exampleFormControlName">
                   <span class="input-group-text bg-transparent rounded-0 border-0" id="firstname">
                      <span class="mdi mdi-account-outline mdi-18px"></span>
                   </span>
-                  <input type="text" class="form-control bg-transparent rounded-0 border-0 px-0"
-                     placeholder="Tuliskan nama pasien" aria-label="Type your first name" aria-describedby="firstname"
-                     >
+                  <input required name="nama" type="text" class="form-control bg-transparent rounded-0 border-0 px-0" placeholder="Tuliskan nama pasien" aria-label="Type your first name" aria-describedby="firstname">
                </div>
             </div>
             <div class="mb-3">
@@ -51,9 +49,7 @@
                   <span class="input-group-text bg-transparent rounded-0 border-0" id="firstname">
                      <span class="mdi mdi-calendar mdi-18px"></span>
                   </span>
-                  <input type="date" class="form-control bg-transparent rounded-0 border-0 px-0"
-                     placeholder="dd/mm/yyyy" aria-label="Type your last name" aria-describedby="firstname"
-                     >
+                  <input required name="lahir" type="date" class="form-control bg-transparent rounded-0 border-0 px-0" placeholder="dd/mm/yyyy" aria-label="Type your last name" aria-describedby="firstname">
                </div>
             </div>
             <div class="mb-3">
@@ -62,7 +58,7 @@
                   <label class="input-group-text bg-transparent rounded-0 border-0" for="inputGroupSelect01">
                      <span class="mdi mdi-gender-male-female mdi-18px"></span>
                   </label>
-                  <select class="form-select bg-transparent rounded-0 border-0 px-0" id="inputGroupSelect01">
+                  <select required name="kelamin" class="form-select bg-transparent rounded-0 border-0 px-0" id="inputGroupSelect01">
                      <option selected>Male</option>
                      <option value="1">Female</option>
                   </select>
@@ -75,9 +71,7 @@
                   <span class="input-group-text bg-transparent rounded-0 border-0" id="firstname">
                      <span class="mdi mdi-home mdi-18px"></span>
                   </span>
-                  <input type="text" class="form-control bg-transparent rounded-0 border-0 px-0"
-                     placeholder="Tuliskan alamat pasien" aria-label="Type your last name" aria-describedby="firstname"
-                     >
+                  <input required name="alamat" type="text" class="form-control bg-transparent rounded-0 border-0 px-0" placeholder="Tuliskan alamat pasien" aria-label="Type your last name" aria-describedby="firstname">
                </div>
             </div>
 
@@ -87,22 +81,18 @@
                   <span class="input-group-text bg-transparent rounded-0 border-0" id="firstname">
                      <span class="mdi mdi-briefcase mdi-18px"></span>
                   </span>
-                  <input type="text" class="form-control bg-transparent rounded-0 border-0 px-0"
-                     placeholder="Tuliskan pekerjaan pasien" aria-label="Type your last name" aria-describedby="firstname"
-                     >
+                  <input required name="pekerjaan" type="text" class="form-control bg-transparent rounded-0 border-0 px-0" placeholder="Tuliskan pekerjaan pasien" aria-label="Type your last name" aria-describedby="firstname">
                </div>
             </div>
-           
+
 
             <div>
                <label for="exampleFormControlNumber" class="form-label mb-1">Nomor WA</label>
                <div class="input-group border bg-white rounded-3 py-1" id="exampleFormControlNumber">
                   <span class="input-group-text bg-transparent rounded-0 border-0" id="number">
-                    <span class="mdi mdi-whatsapp mdi-18px"></span>
-               </span>
-                  <input type="text" class="form-control bg-transparent rounded-0 border-0 px-0"
-                     placeholder="+62" aria-label="Type your number" aria-describedby="number"
-                  >
+                     <span class="mdi mdi-whatsapp mdi-18px"></span>
+                  </span>
+                  <input required name="wa" type="text" class="form-control bg-transparent rounded-0 border-0 px-0" placeholder="+62" aria-label="Type your number" aria-describedby="number">
                </div>
             </div>
 
@@ -112,10 +102,7 @@
                   <span class="input-group-text bg-transparent rounded-0 border-0" id="firstname">
                      <span class="mdi mdi-allergy mdi-18px"></span>
                   </span>
-                  <textarea type="text" class="form-control bg-transparent rounded-0 border-0 px-0"
-                     placeholder="Tuliskan alergi dari pasien" aria-label="Type your last name" aria-describedby="firstname"
-                     >
-                  </textarea>
+                  <textarea required name="alergi" type="text" class="form-control bg-transparent rounded-0 border-0 px-0" placeholder="Tuliskan alergi dari pasien" aria-label="Type your last name" aria-describedby="firstname"></textarea>
                </div>
             </div>
 
@@ -125,23 +112,35 @@
                   <span class="input-group-text bg-transparent rounded-0 border-0" id="firstname">
                      <span class="mdi mdi-history mdi-18px"></span>
                   </span>
-                  <textarea type="text" class="form-control bg-transparent rounded-0 border-0 px-0"
-                     placeholder="Tuliskan riwayat kesehatan pasien" aria-label="Type your last name" aria-describedby="firstname"
-                     >
-                  </textarea>
+                  <textarea required name="riwayat" type="text" class="form-control bg-transparent rounded-0 border-0 px-0" placeholder="Tuliskan riwayat kesehatan pasien" aria-label="Type your last name" aria-describedby="firstname"></textarea>
                </div>
             </div>
 
 
-         </form>
+
       </div>
       <!-- footer -->
       <div class="footer mt-auto p-3">
-         <a href="my-profile.html" class="btn btn-info btn-lg w-100 rounded-4">Simpan</a>
+         <button type="submit" class="btn btn-info btn-lg w-100 rounded-4">Simpan</button>
       </div>
+      </form>
    </div>
    <!-- sidebar nav -->
-   
+   <nav id="main-nav">
+      <ul class="second-nav">
+         <li class="osahan-user-profile bg-primary">
+            <div class="d-flex align-items-center gap-2">
+               <img src="img/favorite/favorite-4.jpg" alt="" class="rounded-pill img-fluid">
+               <div class="ps-1">
+                  <h6 class="fw-bold text-white mb-0">Hey, <?= $nama ?></h6>
+
+               </div>
+            </div>
+         </li>
+         <li><a href="<?= base_url() . 'Home/logout' ?>"><span class="mdi mdi-logout me-3"></span>Keluar</a></li>
+      </ul>
+
+   </nav>
    <!-- Bootstrap bundle js -->
    <script src="<?= base_url() . "assets/" ?>vender/bootstrap/js/bootstrap.bundle.min.js"></script>
    <!-- Jquery js -->

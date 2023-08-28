@@ -4,7 +4,7 @@
       <meta charset="UTF-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link rel="icon" href="<?= base_url()."assets/" ?>img/logo.svg" type="image/png">
+      <link rel="icon" href="<?= base_url()."assets/" ?>img/logo_waja.png" type="image/png">
       <title>Waja - Selamat Datang</title>
       <!-- Bootstrap css -->
       <link rel="stylesheet" href="<?= base_url()."assets/" ?>vender/bootstrap/css/bootstrap.min.css">
@@ -21,7 +21,7 @@
       <div class="welcome d-flex align-items-center justify-content-center vh-100">
          <div class="text-center pb-5 mb-5">
             <div class="mb-5">
-               <img src="<?= base_url()."assets/" ?>img/logo.svg" alt="" class="img-fluid blue-logo mb-3">
+               <img src="<?= base_url()."assets/" ?>img/logo_waja.png" alt="" class="img-fluid blue-logo mb-3">
                <h1 class="text-primary mb-1">Waja</h1>
                <p class="text-muted">Selamat datang di Klinik Waja!</p>
             </div>

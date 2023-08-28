@@ -11,23 +11,14 @@ class Pasien extends CI_Controller
 
   public function index()
   {
-    $this->load->view('homepage');
+    $data = [
+      'pasien' => $this->modAkun->getPasienById($this->input->get("a"))[0],
+      'treatment' => $this->modAkun->getTreatment($this->input->get("a")),
+    ];
+
+    $this->load->view('pasien_profile', $data);
   }
 
-  public function login()
-  {
-    $this->load->view('login');
-  }
-
-  public function dashboard()
-  {
-    $this->load->view('dashboard_asistant');
-  }
-
-  public function pasien()
-  {
-    $this->load->view('pasien_profile');
-  }
-
-
+  
+  
 }

@@ -2,50 +2,52 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="img/logo_waja.png" type="image/png">
-    <title>Waja - Biodata Pasien</title>
-    <!-- Bootstrap css -->
-    <link rel="stylesheet" href="<?= base_url() . "assets/" ?>vender/bootstrap/css/bootstrap.min.css">
-    <!-- Bootstrap icon -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-    <!-- Sidebar css -->
-    <link rel="stylesheet" href="<?= base_url() . "assets/" ?>vender/sidebar/demo.css">
-    <!-- Matrial Icons -->
-    <link rel="stylesheet" href="<?= base_url() . "assets/" ?>vender/materialdesign/css/materialdesignicons.min.css">
-    <!-- Custom css -->
-    <link rel="stylesheet" href="<?= base_url() . "assets/" ?>css/style.css">
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="icon" href="img/logo.svg" type="image/png">
+   <title>Waja - Biodata Pasien</title>
+   <!-- Bootstrap css -->
+   <link rel="stylesheet" href="<?= base_url() . "assets/" ?>vender/bootstrap/css/bootstrap.min.css">
+   <!-- Bootstrap icon -->
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+   <!-- Sidebar css -->
+   <link rel="stylesheet" href="<?= base_url() . "assets/" ?>vender/sidebar/demo.css">
+   <!-- Matrial Icons -->
+   <link rel="stylesheet" href="<?= base_url() . "assets/" ?>vender/materialdesign/css/materialdesignicons.min.css">
+   <!-- Custom css -->
+   <link rel="stylesheet" href="<?= base_url() . "assets/" ?>css/style.css">
 </head>
 
 <body class="bg-light">
-    <div class="doctor-profile d-flex flex-column vh-100">
-        <div class="d-flex align-items-center justify-content-between mb-auto p-3 bg-white shadow-sm osahan-header">
-            <a href="<?= base_url() . 'Assistant' ?>" class="text-dark bg-white shadow rounded-circle icon">
-                <span class="mdi mdi-arrow-left mdi-18px"></span></a>
-            <h6 class="mb-0 ms-3 me-auto fw-bold">Biodata Pasien</h6>
-            <div class="d-flex align-items-center gap-2">
-            <a class="toggle d-flex align-items-center justify-content-center fs-5 bg-white shadow rounded-circle icon" href="#">
-               <i class="bi bi-list"></i></a>
+   <div class="doctor-profile d-flex flex-column vh-100">
+      <div class="d-flex align-items-center justify-content-between mb-auto p-3 bg-white shadow-sm osahan-header">
+         <!-- <a href="<?= base_url() . 'Assistant' ?>" class="text-dark bg-white shadow rounded-circle icon">
+                <span class="mdi mdi-arrow-left mdi-18px"></span></a> -->
+         <h6 class="mb-0 ms-3 me-auto fw-bold">Biodata Pasien</h6>
+         <div class="d-flex align-items-center gap-2">
+            <!-- <a class="toggle d-flex align-items-center justify-content-center fs-5 bg-white shadow rounded-circle icon" href="#">
+               <i class="bi bi-list"></i></a> -->
          </div>
-        </div>
-        <!-- body -->
-        <div class="vh-100 my-auto overflow-auto">
+      </div>
+      <!-- body -->
+      <div class="vh-100 my-auto overflow-auto">
          <!-- banner -->
 
          <div class="p-3 bg-white">
             <div class="mb-3">
                <p>
-               <h6 class="mb-1"><?= $pasien->nama ?></h6><span class="small text-muted"><?= $pasien->id_pasien ?></span></p>
+               <h2 class="mb-1 text-center"><?= $pasien->nama ?></h2>
+               <h6 class="text-center"><?= 'NO RM.'. $pasien->id_pasien ?></h6>
+               <h3 class="text-center"><img style="width:40%" src="<?= base_url() . "assets/img/barcode/" . $pasien->barcode ?>"></h3>
+            </p>
             </div>
-            <div class="d-flex align-items-center justify-content-between">
-               <div class="d-flex align-items-center  col">
-                  <span><img style="width:40%" src="<?= base_url() . "assets/img/barcode/" . $pasien->barcode ?>"></span>
-
+            <!-- <div class="d-flex align-items-center justify-content-between">
+               <div class="d-flex align-items-center col">
+                  <img style="width:40%" src="<?= base_url() . "assets/img/barcode/" . $pasien->barcode ?>">
                </div>
 
-            </div>
+            </div> -->
          </div>
          <!-- tabs -->
          <div class="bg-white shadow-sm border-top">
@@ -130,41 +132,49 @@
                <!-- experience -->
                <div class="tab-pane fade p-3" id="pills-experience" role="tabpanel" aria-labelledby="pills-experience-tab" tabindex="0">
 
-                  <?php foreach ($treatment as $key) { ?>
+                  <?php
+                  $i = 0;
+                  foreach ($treatment as $key) {
+                     $i++; ?>
 
                      <div class="bg-white rounded-4 p-3 mb-3 shadow-sm">
-                        <!-- <h6 class="mb-3">Amercan Medical College & Hospital</h6> -->
-                        <p class="text-muted mb-2"><?= $key->tanggal?></p>
-                        <p class="text-muted mb-2">Keluhan<br>
-                           <span class="text-dark"><?= $key->keluhan?></span>
-                        </p>
-                        <p class="text-muted mb-2">Prosedur<br>
-                           <span class="text-dark"><?= $key->prosedur?></span> <br>
-                           <span class="text-dark"><?= $key->subprosedur?></span>
-                        </p>
-                        <p class="text-muted mb-0">BHP<br>
-                           <span class="text-dark"><?= $key->bhp?></span> <br>
-                           <span class="text-dark"><?= $key->subbhp?></span>
-                        </p>
-                        <p class="text-muted mb-0">Rp  <?= number_format($key->biaya , 0, ',', '.')?></p>
-                        
+                        <a data-bs-toggle="collapse" href="<?= "#collapseExample" . $i ?>" role="button" aria-expanded="false" aria-controls="collapseExample">
+                           <p class="text-muted mb-2"><?= $key->tanggal ?></p>
+                        </a>
+
+                        <div class="collapse" id="<?= "collapseExample" . $i ?>">
+                           <div class="card card-body">
+                              <p class="text-muted mb-2">Keluhan<br>
+                                 <span class="text-dark"><?= $key->keluhan ?></span>
+                              </p>
+                              <p class="text-muted mb-2">Prosedur<br>
+                                 <span class="text-dark"><?= $key->prosedur ?></span> <br>
+                                 <span class="text-dark"><?= $key->subprosedur ?></span>
+                              </p>
+                              <p class="text-muted mb-0">BHP<br>
+                                 <span class="text-dark"><?= $key->bhp ?></span> <br>
+                                 <span class="text-dark"><?= $key->subbhp ?></span>
+                              </p>
+                              <p class="text-muted mb-0">Rp <?= number_format($key->biaya, 0, ',', '.') ?></p>
+                           </div>
+                        </div>
                      </div>
                   <?php } ?>
                </div>
-             
+
             </div>
          </div>
       </div>
-        <!-- footer -->
-        <div class="footer d-grid mt-auto p-3">
-         <div class="d-flex gap-2">
-            <!-- <a href="call-doctor.html" class="btn btn-outline-info bg-light btn-lg col"><i class="bi bi-camera-video-fill me-2"></i> Call</a> -->
-            <a href="<?= base_url() . 'Assistant/ubahbiodata?a='.$pasien->id_pasien ?>" class="btn btn-info btn-lg col">Ubah Biodata</a>
+      <!-- footer -->
+      <!-- <div class="footer d-grid mt-auto p-3">
+         <div class="d-flex gap-2"> -->
+      <!-- <a href="call-doctor.html" class="btn btn-outline-info bg-light btn-lg col"><i class="bi bi-camera-video-fill me-2"></i> Call</a> -->
+      <!-- <a href="<?= base_url() . 'Assistant/ubahbiodata?a=' . $pasien->id_pasien ?>" class="btn btn-info btn-lg col">Ubah Biodata</a>
          </div>
-      </div>
+      </div> -->
    </div>
-    <!-- share offcanvas -->
-    <!-- <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasshare" aria-labelledby="offcanvasshareLabel" style="height:40vh;">
+   <!-- share offcanvas -->
+   <!-- <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasshare" aria-labelledby="offcanvasshareLabel" style="height:40vh;">
          <div class="offcanvas-header d-flex justify-content-center">
             <h5 class="offcanvas-title" id="offcanvasshareLabel">Share to</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -222,8 +232,8 @@
             </div>
          </div>
       </div> -->
-    <!-- sidebar nav -->
-    <!-- <nav id="main-nav">
+   <!-- sidebar nav -->
+   <!-- <nav id="main-nav">
          <ul class="second-nav">
             <li class="osahan-user-profile bg-primary">
                <div class="d-flex align-items-center gap-2">
@@ -318,8 +328,8 @@
          </ul>
       </nav> -->
 
-      
-   <nav id="main-nav">
+
+   <!-- <nav id="main-nav">
       <ul class="second-nav">
          <li class="osahan-user-profile bg-primary">
             <div class="d-flex align-items-center gap-2">
@@ -333,32 +343,15 @@
          <li><a href="<?= base_url() . 'Home/logout' ?>"><span class="mdi mdi-logout me-3"></span>Keluar</a></li>
       </ul>
 
-   </nav>
-    <!-- Bootstrap bundle js -->
-    <script src="<?= base_url() . "assets/" ?>vender/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- Jquery js -->
-    <script src="<?= base_url() . "assets/" ?>vender/jquery/jquery.min.js"></script>
-    <!-- Sidebar js -->
-    <script src="<?= base_url() . "assets/" ?>vender/sidebar/hc-offcanvas-nav.js"></script>
-    <!-- Custom js -->
-    <script src="<?= base_url() . "assets/" ?>js/script.js"></script>
+   </nav> -->
+   <!-- Bootstrap bundle js -->
+   <script src="<?= base_url() . "assets/" ?>vender/bootstrap/js/bootstrap.bundle.min.js"></script>
+   <!-- Jquery js -->
+   <script src="<?= base_url() . "assets/" ?>vender/jquery/jquery.min.js"></script>
+   <!-- Sidebar js -->
+   <script src="<?= base_url() . "assets/" ?>vender/sidebar/hc-offcanvas-nav.js"></script>
+   <!-- Custom js -->
+   <script src="<?= base_url() . "assets/" ?>js/script.js"></script>
 </body>
 
 </html>
-
-
-<?php
-if( $this->session->flashdata('status')){
-   if( $this->session->flashdata('status')=="gagal"){
-      ?>
-      <script>alert('data gagal disimpan.');</script>
-      <?php
-   }else{
-      ?>
-      <script>alert('data berhasil disimpan.');</script>
-      <?php
-
-   }
-
-}
-?>

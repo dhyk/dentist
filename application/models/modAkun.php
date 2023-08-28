@@ -1,264 +1,182 @@
-<?php 
+<?php
 
 class ModAkun extends CI_Model
 {
-	public function cariPassword($username)
+  public function cariPassword($username)
   {
     $this->db->select('*');
     $this->db->from('akun');
-     $this->db->where('email',$username);
-     return $this->db->get()->result();    
-   
+    $this->db->where('email', $username);
+    return $this->db->get()->result();
   }
 
-  public function getAkun()
+  public function getPasien()
   {
     $this->db->select('*');
-    $this->db->from('akun');
-    $this->db->order_by("nama_akun", "asc");
-     return $this->db->get()->result();    
-   
+    $this->db->from('pasien');
+    $this->db->order_by("id_pasien", "asc");
+    return $this->db->get()->result();
   }
 
-  public function getAkunId($id)
+  public function getPasienById($id)
   {
     $this->db->select('*');
-    $this->db->from('akun');
-    $this->db->where("id_akun", $id);
-     return $this->db->get()->result();    
-   
-  }
-  public function getAkunKelompok($id)
-  {
-    $this->db->select('kelompok');
-    $this->db->from('akun_kelompok');
-    $this->db->join('kelompok','akun_kelompok.id_kelompok=kelompok.id_kelompok');
-    $this->db->where("id_akun", $id);
-    return $this->db->get()->result();    
-   
-  }
-  public function getKelompok()
-  {
-    $this->db->select('*');
-    $this->db->from('kelompok');
-    $this->db->order_by("kelompok", "asc");
-     return $this->db->get()->result();    
-   
+    $this->db->from('pasien');
+    $this->db->where("id_pasien", $id);
+    return $this->db->get()->result();
   }
 
-  public function getKelompokId($id)
+  public function getTreatment($id)
   {
     $this->db->select('*');
-    $this->db->from('kelompok');
-    $this->db->where("id_kelompok", $id);
-     return $this->db->get()->result();    
-   
+    $this->db->from('treatment');
+    $this->db->where("id_pasien", $id);
+    $this->db->order_by("tanggal", "desc");
+    return $this->db->get()->result();
   }
 
-  public function simpanPengumuman($data){
+  public function getTreatmentById($id)
+  {
+    $this->db->select('*');
+    $this->db->from('treatment');
+    $this->db->where("id_treatment", $id);
+    return $this->db->get()->result();
+  }
+
+  public function edittreatment($id, $data)
+  {
+    $this->db->where('id_treatment', $id);
+    $this->db->update('treatment', $data);
+
+    return ($this->db->affected_rows() != 1) ? false : true;
+  }
+
+
+  public function getProsedur()
+  {
+    $this->db->select('*');
+    $this->db->from('prosedur');
+    $this->db->order_by("prosedur", "asc");
+    return $this->db->get()->result();
+  }
+
+  public function getBhp()
+  {
+    $this->db->select('*');
+    $this->db->from('bhp');
+    $this->db->order_by("bhp", "asc");
+    return $this->db->get()->result();
+  }
+
+  public function getProsedurId($prosedur)
+  {
+    $this->db->select('*');
+    $this->db->from('prosedur');
+    $this->db->order_by("prosedur", $prosedur);
+    return $this->db->get()->result();
+  }
+
+  public function getBhpId($bhp)
+  {
+    $this->db->select('*');
+    $this->db->from('bhp');
+    $this->db->where("bhp", $bhp);
+    return $this->db->get()->result();
+  }
+
+  public function getSubprosedur($id)
+  {
+    $this->db->select('*');
+    $this->db->from('subprosedur');
+    $this->db->where("id_prosedur", $id);
+    $this->db->order_by("subprosedur", "asc");
+    return $this->db->get()->result();
+  }
+
+  public function getSubbhp($id)
+  {
+    $this->db->select('*');
+    $this->db->from('subbhp');
+    $this->db->where("id_bhp", $id);
+    $this->db->order_by("subbhp", "asc");
+    return $this->db->get()->result();
+  }
+
+  public function getBiaya($subbhp)
+  {
+    $this->db->select('harga');
+    $this->db->from('subbhp');
+    $this->db->where("subbhp", $subbhp);
+    return $this->db->get()->result();
+  }
+
+  public function simpantreatment($data)
+  {
+    $this->db->insert('treatment', $data);
+
+
+    if ($this->db->affected_rows() != 1) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  public function simpanpasien($data)
+  {
+    $this->db->insert('pasien', $data);
+
+
+    if ($this->db->affected_rows() != 1) {
+      return false;
+    } else {
+      $insert_id = $this->db->insert_id();
+
+      $kodeqr = $insert_id;
+
+      $this->qr($kodeqr);
+      $this->ubahpasien($insert_id,['barcode'=>''.$kodeqr.'.png']);
+
+
+      return true;
+    }
+  }
+
+  public function ubahpasien($id, $data)
+  {
+    $this->db->where('id_pasien', $id);
+    $this->db->update('pasien', $data);
+
+    return ($this->db->affected_rows() != 1) ? false : true;
+  }
+
+	
+function qr($kodeqr)
+{
+    if($kodeqr){
+        $filename = 'assets/img/barcode/'.$kodeqr;
+        if (!file_exists($filename)) { 
+                $this->load->library('ciqrcode');
+                $params['data'] = base_url()."pasien?a=".$kodeqr;
+                $params['level'] = 'H';
+                $params['size'] = 10;
+                $params['savename'] = FCPATH.'assets/img/barcode/'.$kodeqr.".png";
+                return  $this->ciqrcode->generate($params);
+        }
+    }
+}
+
+
+  public function simpanPengumuman($data)
+  {
     $this->db->insert('pengumuman', $data);
-      
-    
-      if($this->db->affected_rows() != 1) {
-        return false;
-      }
-      else{
-        $insert_id = $this->db->insert_id();
-        return $insert_id;
-      }
-       
-    
+
+
+    if ($this->db->affected_rows() != 1) {
+      return false;
+    } else {
+      $insert_id = $this->db->insert_id();
+      return $insert_id;
+    }
   }
-
-  public function dashPengumuman(){
-    $this->db->select('*');
-    $this->db->from('pengumuman');
-    $this->db->order_by("date_created", "desc");
-    $this->db->limit(10);
-     return $this->db->get()->result();    
-  }
-
-  public function hitungPengumuman(){
-    $this->db->select('count(*) as jumlah');
-    $this->db->from('pengumuman');
-     return $this->db->get()->result();    
-   
-  }
-
-  public function hitungTerkirim(){
-    $this->db->select('count(*) as jumlah');
-    $this->db->from('pengumuman');
-     $this->db->where('status','TERKIRIM');
-     return $this->db->get()->result();    
-  }
-
-  public function hitungAktif(){
-    $this->db->select('count(*) as jumlah');
-    $this->db->from('pengumuman');
-     $this->db->where('status','AKTIF');
-     return $this->db->get()->result();    
-   
-  }
-
-  public function hitungGagal(){
-    $this->db->select('count(*) as jumlah');
-    $this->db->from('pengumuman');
-     $this->db->where('status','GAGAL');
-     return $this->db->get()->result();    
-
-  }
-
-
-  public function dashPengumumanId($id){
-    $this->db->select('*');
-    $this->db->from('pengumuman');
-    $this->db->where('id_akun',$id);
-    $this->db->order_by("date_created", "desc");
-    $this->db->limit(10);
-     return $this->db->get()->result();    
-  }
-
-  public function hitungPengumumanId($id){
-    $this->db->select('count(*) as jumlah');
-    $this->db->from('pengumuman');
-    $this->db->where('id_akun',$id);
-     return $this->db->get()->result();    
-   
-  }
-
-  public function hitungTerkirimId($id){
-    $where=[
-      'id_akun'=>$id,
-      'status'=>'TERKIRIM'
-    ];
-    $this->db->select('count(*) as jumlah');
-    $this->db->from('pengumuman');
-    $this->db->where($where);
-     return $this->db->get()->result();    
-  }
-
-  public function hitungAktifId($id){
-    $where=[
-      'id_akun'=>$id,
-      'status'=>'AKTIF'
-    ];
-    $this->db->select('count(*) as jumlah');
-    $this->db->from('pengumuman');
-    $this->db->where($where);
-     return $this->db->get()->result();    
-   
-  }
-
-  public function hitungGagalId($id){
-    $where=[
-      'id_akun'=>$id,
-      'status'=>'GAGAL'
-    ];
-    $this->db->select('count(*) as jumlah');
-    $this->db->from('pengumuman');
-    $this->db->where($where);
-     return $this->db->get()->result();    
-
-  }
-
-  public function updatePassword($email,$password){
-
-    $this->db->where('email', $email);
-    $this->db->update('akun', ['password' => $password]);
-
-    return ($this->db->affected_rows() != 1) ? false : true;
-  }
-
-  public function simpanKelompok($data){
-    $this->db->insert('kelompok', $data);
-
-    return ($this->db->affected_rows() != 1) ? false : true;
-  }
-
-  public function updateKelompok($data,$id){
-
-    $this->db->where('id_kelompok', $id);
-    $this->db->update('kelompok', $data);
-
-    return ($this->db->affected_rows() != 1) ? false : true;
-  }
-
-  public function hapusKelompok($id){
-
-    
-    $this -> db -> where('id_kelompok', $id);
-    $this -> db -> delete('akun_kelompok');
-
-    $this -> db -> where('id_kelompok', $id);
-    $this -> db -> delete('kelompok');
-
-
-    return ($this->db->affected_rows() != 1) ? false : true;
-  }
-
-
-
-public function simpanAkun($data){
-  $this->db->insert('akun',$data);
-  
-
-  if($this->db->affected_rows() != 1) {
-    return false;
-  }
-  else{
-    $insert_id = $this->db->insert_id();
-    return $insert_id;
-  }
-   
 }
-
-public function akunKelompok($data){
-  $this->db->insert('akun_kelompok',$data);
-  return ($this->db->affected_rows() != 1) ? false : true;
-}
-
-public function ubahAkun($data,$id){
-  $this->db->where('id_akun', $id);
-  $this->db->update('akun', $data);
-
-  return ($this->db->affected_rows() != 1) ? false : true;
-
-}
-
-public function ubahAkunKelompok($data){
-
-
-  $this->db->insert('akun_kelompok',$data);
-  return ($this->db->affected_rows() != 1) ? false : true;
-  
-}
-
-public function hapusAkunKelompok($id){
-  $this -> db -> where('id_akun', $id);
-  $this -> db -> delete('akun_kelompok');
-
-  return ($this->db->affected_rows() != 1) ? false : true;
-}
-
-public function hapusAkun($id){
-  $this -> db -> where('id_akun', $id);
-  $this -> db -> delete('akun_kelompok');
-
-  $this -> db -> where('id_akun', $id);
-  $this -> db -> delete('akun');
-
-  return ($this->db->affected_rows() != 1) ? false : true;
-}
-
-public function resetPassword($data,$id){
-  $this->db->where('id_akun', $id);
-  $this->db->update('akun', $data);
-
-  return ($this->db->affected_rows() != 1) ? false : true;
-
-}
-
-
-}
-
-?>
