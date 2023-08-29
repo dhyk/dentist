@@ -6,14 +6,14 @@ class Pasien extends CI_Controller
   public function __construct()
   {
     parent::__construct();
-    $this->load->model('modAkun');
+    $this->load->model('ModAkun');
   }
 
   public function index()
   {
     $data = [
-      'pasien' => $this->modAkun->getPasienById($this->input->get("a"))[0],
-      'treatment' => $this->modAkun->getTreatment($this->input->get("a")),
+      'pasien' => $this->ModAkun->getPasienById($this->input->get("a"))[0],
+      'treatment' => $this->ModAkun->getTreatment($this->input->get("a")),
     ];
 
     $this->load->view('pasien_profile', $data);

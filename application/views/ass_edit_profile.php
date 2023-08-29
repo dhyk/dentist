@@ -60,8 +60,8 @@
                   </label>
                   <select required name="kelamin" class="form-select bg-transparent rounded-0 border-0 px-0" id="inputGroupSelect01">
                      <option selected value="<?= $pasien->kelamin ?>"><?= $pasien->kelamin ?></option>
-                     <option selected>Male</option>
-                     <option value="1">Female</option>
+                     <option value="Pria">Pria</option>
+                     <option value="Wanita">Wanita</option>
                   </select>
                </div>
             </div>

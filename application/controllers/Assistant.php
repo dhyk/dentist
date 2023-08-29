@@ -6,7 +6,7 @@ class Assistant extends CI_Controller
   public function __construct()
   {
     parent::__construct();
-    $this->load->model('modAkun');
+    $this->load->model('ModAkun');
   }
 
   public function index()
@@ -15,7 +15,7 @@ class Assistant extends CI_Controller
 
     $data=[
       'nama'=>$this->session->userdata("nama"),
-      'pasien'=>$this->modAkun->getPasien(),
+      'pasien'=>$this->ModAkun->getPasien(),
     ];
 
     $this->load->view('ass_dashboard',$data);
@@ -27,8 +27,8 @@ class Assistant extends CI_Controller
 
     $data=[
       'nama'=>$this->session->userdata("nama"),
-      'pasien'=>$this->modAkun->getPasienById($this->input->get("a"))[0],
-      'treatment'=>$this->modAkun->getTreatment($this->input->get("a")),
+      'pasien'=>$this->ModAkun->getPasienById($this->input->get("a"))[0],
+      'treatment'=>$this->ModAkun->getTreatment($this->input->get("a")),
     ];
 
     $this->load->view('ass_pasien_profile',$data);
@@ -58,7 +58,7 @@ class Assistant extends CI_Controller
     ];
 
     // var_dump($data);
-    $result=$this->modAkun->simpanpasien($data);
+    $result=$this->ModAkun->simpanpasien($data);
     if($result){
       $this->session->set_flashdata('status','berhasil');
     }else{
@@ -74,7 +74,7 @@ class Assistant extends CI_Controller
     if(! $this->session->userdata("id_akun")) redirect('Home');
 
     $data=[
-      'pasien'=>$this->modAkun->getPasienById($this->input->get("a"))[0],
+      'pasien'=>$this->ModAkun->getPasienById($this->input->get("a"))[0],
       'nama'=>$this->session->userdata("nama"),
     ];
 
@@ -95,7 +95,7 @@ class Assistant extends CI_Controller
     ];
 
     // var_dump($data);
-    $result=$this->modAkun->ubahpasien($this->input->post("id_pasien"),$data);
+    $result=$this->ModAkun->ubahpasien($this->input->post("id_pasien"),$data);
     if($result){
       $this->session->set_flashdata('status','berhasil');
     }else{

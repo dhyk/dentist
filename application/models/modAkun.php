@@ -166,6 +166,59 @@ function qr($kodeqr)
     }
 }
 
+public function simpanprosedur($data)
+{
+  $this->db->insert('prosedur', $data);
+
+
+  if ($this->db->affected_rows() != 1) {
+    return false;
+  } else {
+    return true;
+  }
+  
+}
+
+public function simpansubprosedur($data)
+{
+  $this->db->insert('subprosedur', $data);
+
+
+  if ($this->db->affected_rows() != 1) {
+    return false;
+  } else {
+    return true;
+  }
+  
+}
+
+
+public function simpanbhp($data)
+{
+  $this->db->insert('bhp', $data);
+
+
+  if ($this->db->affected_rows() != 1) {
+    return false;
+  } else {
+    return true;
+  }
+  
+}
+
+public function simpansubbhp($data)
+{
+  $this->db->insert('subbhp', $data);
+
+
+  if ($this->db->affected_rows() != 1) {
+    return false;
+  } else {
+    return true;
+  }
+  
+}
+
 
   public function simpanPengumuman($data)
   {

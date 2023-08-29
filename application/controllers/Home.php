@@ -6,7 +6,7 @@ class Home extends CI_Controller
   public function __construct()
   {
     parent::__construct();
-    $this->load->model('modAkun');
+    $this->load->model('ModAkun');
   }
 
   public function index()
@@ -24,7 +24,7 @@ class Home extends CI_Controller
     $email = $this->input->post('email');
     $password = md5($this->input->post('password'));
 
-    $hasil = $this->modAkun->cariPassword($email);
+    $hasil = $this->ModAkun->cariPassword($email);
     if ($hasil) {
 
       if ($hasil[0]->password == $password) {
